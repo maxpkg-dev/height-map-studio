@@ -137,3 +137,26 @@ related 3DGROUND tool links every 30 seconds. Rotation pauses while the link is
 hovered, focused, or pressed. The separate heart Donate button remains visible.
 Links open the default browser only when activated. The timer stops when the
 window is hidden or closed; no network requests are made by the rotating row.
+
+## GitHub Release helpers
+
+`release-github.bat` follows the Dropper BAT launcher. The PowerShell workflow is
+based on Dropper's release script and the existing GC adaptation's identity and
+pushed-commit guards, with Height Map Studio's Python version metadata and origin.
+
+After building a fresh MZP with the official packager, commit the intended release
+files and push `main` yourself. Run `release-github.bat --check-only` first (or
+`powershell -NoProfile -File .\release-github.ps1 -CheckOnly`). This requires Git,
+authenticated GitHub CLI, a clean working tree and HEAD already on origin/main.
+
+The helper selects the numerically highest MZP version, rejects ambiguous versions,
+checks manifests, package identity/version/channel, the exact origin, and existing
+release/tag state. It refuses to replace an existing release or move a conflicting
+tag. CheckOnly never creates a release or uploads an asset. Running the BAT without
+arguments asks for confirmation before publication; it does not build, commit or
+push. For unattended check-only use, set `HMS_RELEASE_NO_PAUSE=1` before running the BAT.
+
+Edit the artist guide in root `README.md`; `build.py` copies it into the portable
+payload's README. Rebuild the official MZP after changing any packaged file,
+including documentation. The existing MZP passed static inspection before the
+expanded artist-guide update and now needs rebuilding to include that update.

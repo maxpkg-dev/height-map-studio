@@ -10,7 +10,8 @@ import xml.etree.ElementTree as ET
 
 root = Path(__file__).resolve().parents[1]
 config = configparser.ConfigParser(interpolation=None)
-config.read(str(root / "maxpkg-packager.ini"), encoding="utf8")
+config_bytes = (root / "maxpkg-packager.ini").read_bytes()
+config.read_string(config_bytes.decode("utf16" if config_bytes.startswith((b"\xff\xfe", b"\xfe\xff")) else "utf-8-sig"))
 settings = config["settings"]
 assert settings["license"] == "Free"
 uuid.UUID(settings["packageGuid"])

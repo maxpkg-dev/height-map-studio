@@ -31,12 +31,17 @@ The package identity is stored only in the configuration and build metadata.
 
 Current verification: official tooling hash equality, input-file completeness,
 SVG validity, Python 3.7 syntax, isolated accelerator tests, real Qt 5.15.1 focus
-events outside Max, and sample race guards. No MZP has been built in this stage:
-After the user permitted a fresh connection check, max_list_instances still
-returned Transport closed. No instance was selected and no build call ran.
-Official API validation/build, archive inspection, installation, installed launch,
-update preservation and uninstall remain unverified. No push or publication is
-part of this local-only workflow.
+events outside Max, and sample race guards. After a user-authorized connection
+check, max_list_instances still returned Transport closed; the agent did not run
+the official build API or any installation operation.
+
+An MZP subsequently appeared in dist during user activity. Static inspection found
+39 entries, matching runtime files, sample, accepted icon and original hooks, valid
+manifest identity/Free beta metadata, correct entry, and no developer paths in the
+manifests/bootstrap. Its CRC check passed. The expanded artist README was changed
+after that inspection, so this existing MZP is now stale and must be rebuilt before
+release. Installation, installed launch, update and uninstall remain unverified.
+No push or publication was performed.
 
 The revised contour icon was rendered and visually checked at 32, 64 and 512 pixels.
 Its bright contour rings replace the rejected pyramid-and-layers artwork.
