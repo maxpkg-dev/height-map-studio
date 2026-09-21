@@ -1,139 +1,14 @@
 # Height Map Studio
 
-A compact Normal, Displacement, Ambient Occlusion, and Specular map generator for 3ds Max.
-Runs locally without an internet connection, a separate Python installation, or additional Python packages.
+Turn one height image into **Normal**, **Displacement**, **Ambient Occlusion** and **Specular** maps inside 3ds Max. Fine-tune each map with simple controls and check the result in 2D or on a 3D sphere, plane or cube. AO and Specular are useful approximations derived from the height image.
 
-## Launch
+1. Drag in a PNG, TIFF or JPG, or click **Open image**. A sample is ready when you first open the tool.
+2. Adjust the map settings and switch between **2D / 3D** to preview the result.
+3. Check the maps you want in **Set**, choose PNG, TIFF or JPEG, and click **Save**. Use PNG or TIFF for 16-bit displacement.
+4. Click **Add to Slate** separately to add the selected saved maps as Bitmap nodes. Connect them to your material as needed.
 
-1. Extract the **entire** HeightMapStudio folder from the ZIP to a permanent location.
-2. In 3ds Max, choose **Scripting → Run Script** and open `Launch.ms`.
-3. Drop a single height map onto the window or click **Open image…**.
-   The included `Sample_height_16.png` loads automatically in a new empty window.
-   Explicit file requests and already-open images take priority over this demo.
+**Save beside source** keeps exports next to your image. Turn it off to choose a destination. Right-click **Save** to open the source image folder.
 
-Running the script again activates the existing window when source files are unchanged.
-After an update, Launch closes the old window and reloads this folder's code, preserving
-the current image and controls. If an image operation is running, finish it and launch again.
-It does not install a startup script.
+**Installation:** for an MZP distribution, drag the `.mzp` into 3ds Max, confirm installation, and launch Height Map Studio from the **MaxPkg** category. For the portable ZIP, extract the whole folder and run `Launch.ms` through **Scripting > Run Script**.
 
-Window size and position are remembered between sessions. With no saved placement, the window
-uses the minimum practical width and derives its height from the current layout so the preview
-is square. Saved user dimensions take priority. Off-screen placement is brought back into the
-available screen area. Placement is stored in per-user Qt settings under HeightMapStudio/Window.
-
-## Controls
-
-| Map | Main settings |
-|---|---|
-| Normal | Strength, Blur |
-| Displacement | Contrast, Level |
-| AO | Strength, Radius |
-| Specular | Brightness, Contrast |
-
-Each map retains its settings when switching tabs. **Reset settings** restores all defaults.
-The reset button is inside **Map Settings** and changes map parameters only.
-Normal Strength's slider covers 0–20; manual entry accepts values up to 1,000,000.
-Values above 20 stay intact while the slider rests at its upper end.
-Blur and AO radii are measured in source-image pixels.
-Slider updates use an 80 ms debounce: processing starts after the latest change settles.
-
-The small **Advanced** button sits beside Reset settings inside **Map Settings**. It reveals
-compact OpenGL (+Y) / DirectX (−Y), Invert height, and Seamless edges controls to its right.
-Seamless edges wraps filtering across the image boundary. The source must already tile seamlessly;
-this option does not repair mismatched edges. Defaults: white represents raised areas, OpenGL normals,
-and filtering clamped to the image boundary.
-
-**Preview controls:** wheel to zoom; left drag to pan in 2D or rotate in 3D;
-right drag in 3D to rotate the light; double-click or **Fit** to reset the view.
-Model rotation supports continuous turns on both axes. The plane is visible from either side;
-at an exactly edge-on angle, its zero-thickness surface naturally has no visible area.
-At Fit, square maps fill a square preview edge to edge. Rectangular maps keep their original
-aspect ratio without stretching or cropping. Buttons and numeric inputs use square borders,
-with clearly separated painted spinner arrows and native input behavior.
-The adjacent **2D** and **3D** buttons switch modes without resetting map settings.
-The 3D preview offers Plane, Sphere and Cube through icon buttons at the top right of the viewer.
-These buttons are hidden in 2D. The Fit overlay at the bottom left works in both modes.
-In 3D it displays a circular reset arrow with the tooltip **Reset view**; in 2D it keeps **Fit**.
-Cube faces each display a complete map with their own tangent-space normal orientation.
-The plane uses lightweight displacement parallax; the cube retains its geometric silhouette.
-This is an approximate material preview, not geometric displacement or a Corona/V-Ray render.
-
-AO estimates occlusion from neighboring heights. Specular is an artistic mask derived from height;
-a height map alone cannot recover a material's physical reflectance.
-
-## Files
-
-- Input: PNG / standard TIFF at 8 or 16 bits, and 8-bit JPG; maximum **8192 × 8192**.
-- Single-channel 16-bit height maps are processed without conversion to 8 bits.
-- Color images are converted to luminance using weights 0.2126 / 0.7152 / 0.0722.
-- Alpha is ignored. Heights are treated as numeric data without sRGB/gamma conversion.
-- Float/HDR TIFF, EXR, BigTIFF, and multilayer processing are not supported.
-- **Save** exports only maps checked beside the button, regardless of the active preview tab.
-  Right-click **Save** to open the current source image's folder in Explorer.
-  Fresh preferences select only Normal. Your subsequent choices are remembered.
-  An empty selection disables Save.
-- **Save beside source** uses the source folder automatically. Turn it off to choose an output
-  destination manually: a filename for one map, or a folder for multiple maps.
-  The bundled demo asks for an external output folder once and remembers it.
-- Output: PNG or TIFF; Normal uses RGB 8-bit, AO/Specular use grayscale 8-bit,
-  and Displacement uses grayscale **16-bit**. TIFF output is uncompressed.
-- JPEG output uses quality 95 and **8-bit** samples for every map, including displacement.
-  JPEG is the initial format; later format choices are remembered.
-  The format selector sits beside the view controls, in JPEG / PNG / TIFF order.
-  JPEG is lossy. Its encoder needs an additional packed image, up to 192 MiB at 8K;
-  cancellation during the codec call is handled before any final file is replaced.
-- Export resolution matches the source. Filenames receive the suffixes
-  `_normal`, `_displacement`, `_ao`, or `_specular`.
-- Replacing existing files requires confirmation. During processing or encoding,
-  **Cancel** removes only temporary files. The final commit of the prepared files is brief;
-  if a disk error occurs, the error message lists files that were already saved.
-
-## Slate Material Editor
-
-**Save** only saves files. The separate **Add to Slate** button at the bottom right adds
-existing files for the map types checked in **Set**, regardless of the active preview tab.
-It does not generate or save maps. Successful export paths are remembered per source image,
-including custom filenames and folders. If no saved path is known and Save beside source is
-enabled, the source folder is checked for the standard map name in the selected format.
-Missing maps are named in the status bar; available selected maps can still be added.
-New Bitmap nodes form a vertical column to the right of existing nodes, with space between
-them. Maps are not connected to materials automatically.
-A View is created if none exists.
-Only the newly created nodes are selected, and the View frames that selection. Previous
-nodes keep their positions. Saving alone leaves Slate unchanged.
-OCIO workflows use the configured **Data Color Space**; gamma-based workflows use **gamma 1.0**.
-Scene color-management settings are not changed.
-If adding a map to Slate fails, the exported files remain available and a separate error is shown.
-
-## Performance and compatibility
-
-Preview resolution is limited to 2048 pixels on its longest side. Full-resolution export
-uses 1024 × 1024 tiles with overlapping filter borders. Export processing and encoding run
-in a worker thread, keeping the Max interface available. The status bar shows preview update time,
-including GPU completion.
-
-Requires Windows x64 and a driver supporting **OpenGL 3.3 core**, float32 framebuffers,
-and 16-bit textures. GPU failures display diagnostics without silently switching processing methods.
-An 8K source uses approximately 512 MiB of RAM in the working format; loading may require additional copies.
-
-The code includes PySide2 adapters for Max 2022–2024 and PySide6 adapters for Max 2025–2027.
-See `TEST_RESULTS.md` for the versions actually tested and known verification limits.
-
-## Project layout
-
-`Launch.ms` starts `launch.py`. The `heightmap_studio` package contains the interface,
-GPU pipeline, background jobs, image codecs, and Slate integration.
-GLSL shaders are in `heightmap_studio/shaders`. Resources are resolved relative to the script.
-The source code is editable.
-
-View buttons use local Lucide `image`, `box`, `square`, `globe`, `maximize` and `rotate-ccw` SVGs, recolored for the dark interface.
-Source: https://github.com/lucide-icons/lucide. The full upstream license notice is
-included in `heightmap_studio/assets/LUCIDE-LICENSE.txt`. No runtime downloads are used.
-
-## Support and related tools
-
-A compact row between the preview and the 2D/3D controls rotates support and
-related 3DGROUND tool links every 30 seconds. Rotation pauses while the link is
-hovered, focused, or pressed. The separate heart Donate button remains visible.
-Links open the default browser only when activated. The timer stops when the
-window is hidden or closed; no network requests are made by the rotating row.
+Prefer browsing tools through a package manager? Visit [maxpkg.dev](https://maxpkg.dev) for MaxPkg and its available tools. This link does not imply that Height Map Studio is already listed there.
