@@ -4,6 +4,7 @@ from .qt import QtCore, QtWidgets
 from .controls import NumberSpinBox
 from .ranges import GROUPS
 from .promotion import donate_button
+from .accelerators import protect_text_entry
 
 
 class SettingsDialog(QtWidgets.QDialog):
@@ -30,11 +31,7 @@ class SettingsDialog(QtWidgets.QDialog):
                 field.setValue(studio.parameters[key].slider.maximum() / 100.0)
                 field.setToolTip("Allowed maximum: greater than %g, up to %g. Manual input is not limited by this slider setting." % (minimum, maximum))
                 field.valueChanged.connect(lambda value, name=key: studio.set_slider_maximum(name, value))
-                try:
-                    import qtmax
-                    qtmax.DisableMaxAcceleratorsOnFocus(field, True)
-                except ImportError:
-                    pass
+                protect_text_entry(field)
                 self.maximums[key] = field
                 form.addRow(label + " maximum", field)
             grid.addWidget(group, index // 2, index % 2)

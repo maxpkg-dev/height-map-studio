@@ -50,7 +50,8 @@ def launch(root):
     window = ui.show()
     ui._launch_signature = signature
     if snapshot is not None:
-        window.generation = 1  # Do not replace the current image with the demo.
+        if snapshot["image"] is not None:
+            window.generation = 1  # Keep an existing user image; empty windows still load the demo.
         for key, value in snapshot["settings"].items():
             if key in window.parameters:
                 window.parameters[key].set_value(value)

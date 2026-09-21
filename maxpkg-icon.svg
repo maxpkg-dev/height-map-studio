@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <title>Height Map Studio</title>
+  <defs>
+    <linearGradient id="base" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#253650"/><stop offset="1" stop-color="#101a2c"/>
+    </linearGradient>
+    <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#4d91f6"/><stop offset="1" stop-color="#2856ae"/>
+    </linearGradient>
+  </defs>
+  <rect x="1" y="1" width="62" height="62" rx="14" fill="url(#base)" stroke="#3b506e" stroke-width="2"/>
+  <path d="M10 42 32 54 54 42" fill="none" stroke="#345b9c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M10 36 32 48 54 36" fill="none" stroke="#5799f3" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M10 30 32 18 54 30 32 42Z" fill="url(#tile)" stroke="#9acbff" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M19 31 30 11 44 30 32 37Z" fill="#c6efff"/>
+  <path d="M30 11 32 37 44 30Z" fill="#7789ee"/>
+  <path d="M19 31 30 25 44 30 32 37Z" fill="#629cee"/>
+  <path d="M30 25 32 37 44 30Z" fill="#5568d4"/>
+  <path d="M19 31 30 11 44 30" fill="none" stroke="#e0f7ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

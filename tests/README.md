@@ -12,3 +12,10 @@ Historical UI scripts (`single_save_checks.py`, `ui_release_checks.py`,
 must be adapted before reuse. Earlier export harnesses pass the now-removed
 automatic-Slate argument. They are retained as development evidence, not claimed
 as passing current regression tests. Do not run all files as a batch.
+
+Current standalone checks (run with the bundled Max 2022 Python 3.7):
+- `accelerator_checks.py`: isolated focus-adapter lifecycle and capability behavior.
+- `qt5_focus_checks.py`: real Qt5 widget events with a test accelerator-state object.
+- `source_folder_checks.py`: real Qt5 context-menu dispatch without opening Explorer.
+- `slate_legacy_checks.py`: isolated legacy Slate API contracts, not a live-Max test.
+- `package_checks.py`: official tooling hashes, allowlist, icon and sample load guards.

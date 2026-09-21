@@ -69,6 +69,7 @@ a height map alone cannot recover a material's physical reflectance.
 - Alpha is ignored. Heights are treated as numeric data without sRGB/gamma conversion.
 - Float/HDR TIFF, EXR, BigTIFF, and multilayer processing are not supported.
 - **Save** exports only maps checked beside the button, regardless of the active preview tab.
+  Right-click **Save** to open the current source image's folder in Explorer.
   Fresh preferences select only Normal. Your subsequent choices are remembered.
   An empty selection disables Save.
 - **Save beside source** uses the source folder automatically. Turn it off to choose an output

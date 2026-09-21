@@ -231,3 +231,42 @@ Python 3.7 syntax and ZIP/source equality checks passed. The MCP transport close
 during the requested Launch reload; the follow-up Settings inspection also returned
 Transport closed. No further live calls were attempted. This new footer layout has
 NOT been runtime-verified and no Settings screenshot was obtained for this update.
+
+## Max 2022 compatibility and local-only MaxPkg preparation
+
+USER-VERIFIED: the user confirmed that Max 2022 launches after the qtmax fallback,
+and subsequently confirmed that Add to Slate works in Max 2022. These reports are
+not a full agent-run Max 2022 regression suite.
+
+The numeric-input adapter prefers qtmax.DisableMaxAcceleratorsOnFocus when present.
+On older qtmax it filters field/child focus, blur, hide, close and deactivation,
+restoring the previous enableAccelerators state; destruction also restores it.
+Five isolated Python 3.7 tests passed. Real Qt 5.15.1 widget-event checks outside
+Max passed focus/blur/close/deactivation/destruction. The reviewed QWidget.screen,
+RGBX64/RGBA64/Grayscale16 APIs exist in installed Max 2022 Qt; allocationLimit does
+not exist there and is already capability-guarded. Native helper errors are not hidden.
+
+Slate now tolerates missing legacy node dimensions, explicitly handles absent
+ColorPipelineMgr, uses documented pymxs.byref for CreateNode, verifies node counts,
+and reports the failed operation in persistent wrapped status text. Newer Slate
+keeps measured height plus 20-unit spacing. Older Slate without dimension access
+uses estimated 200-unit height and 400-unit width; exact boundary spacing for that
+legacy fallback is not measured. Isolated empty/existing View, selection/framing,
+byref, missing-dimension and failure-message contract checks passed; they are not
+live Max API tests. See Autodesk's 2022 SME interface documentation and the 2021+
+pymxs by-reference documentation for the compatibility boundary.
+
+Right-click Save opens only the current existing source image's folder via a local
+QUrl. Real Qt 5 context-menu dispatch tests passed for Unicode/spaces, missing and
+deleted inputs, without invoking Explorer; left-click still emits Save separately.
+
+Bundled sample startup guards and rejection of stale asynchronous sample results
+passed isolated checks. Reloading an empty window still permits sample loading;
+reloading an existing user image preserves it. The sample is in both ZIP and the
+explicit official MaxPkg allowlist.
+
+Original official packager/hooks, saved Free beta 1.0.0 configuration, changelog,
+and original square relief SVG are prepared. Static checks pass; the vector was
+rendered and visually reviewed. No MZP exists yet: the fresh user-authorized
+instance lookup still returned Transport closed before selection or build. No
+installation, update or uninstall check is claimed. No push or publication attempted.

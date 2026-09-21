@@ -7,6 +7,7 @@ from .promotion import PromotionStrip
 from .jobs import LoadJob, ExportJob
 from . import geometry
 from . import saved_maps
+from .accelerators import protect_text_entry
 from .controls import CheckBox, MapMode, NumberSpinBox
 from .ranges import GROUPS, FIELDS, saved_maximum, validate_maximum
 
@@ -71,11 +72,7 @@ class Parameter(QtWidgets.QWidget):
         self.spin.setFixedWidth(68)
         self.spin.setFixedHeight(22)
         self.spin.setKeyboardTracking(False)
-        try:
-            import qtmax
-            qtmax.DisableMaxAcceleratorsOnFocus(self.spin, True)
-        except ImportError:
-            pass  # Standalone Qt diagnostic harness; Max always supplies qtmax.
+        protect_text_entry(self.spin)
         self.slider.setValue(round(default * 100))
         self.spin.setValue(default)
         layout.addWidget(label)
@@ -124,6 +121,7 @@ class Studio(QtWidgets.QDialog):
         self.closing = False
         self.last_directory = ""
         self.last_measurement = None
+        self.slate_status_active = False
         self.settings_dialog = None
         self.shape_explicit = False
         self.timer = QtCore.QTimer(self)
@@ -279,6 +277,8 @@ class Studio(QtWidgets.QDialog):
         self.save_button.setObjectName("primary")
         self.save_button.setFixedSize(200, 34)
         self.save_button.clicked.connect(self.save)
+        self.save_button.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.save_button.customContextMenuRequested.connect(self.open_source_folder)
         toolbar.addWidget(self.format)
         export_row.addWidget(self.save_button)
         self.format.setFixedHeight(self.mode.buttons[0].sizeHint().height())
@@ -306,6 +306,9 @@ class Studio(QtWidgets.QDialog):
         layout.addLayout(output_row)
         progress_row = QtWidgets.QHBoxLayout()
         self.status = QtWidgets.QLabel("Ready to load")
+        self.status.setWordWrap(True)
+        self.status.setMinimumWidth(0)
+        self.status.setSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred)
         self.status.setObjectName("muted")
         self.progress = QtWidgets.QProgressBar()
         self.progress.setVisible(False)
@@ -328,7 +331,8 @@ class Studio(QtWidgets.QDialog):
         selected = any(check.isChecked() for check in self.map_checks.values())
         self.save_button.setEnabled(enabled and selected)
         self.add_slate.setEnabled(not self.export_job)
-        self.save_button.setToolTip("Save selected maps" if selected else "Select at least one map in the Set row")
+        hint = "Save selected maps" if selected else "Select at least one map in the Set row"
+        self.save_button.setToolTip(hint + "\nRight-click: open the source image folder")
 
     def set_selection_changed(self, kind, checked):
         self.geometry_settings.setValue("set_" + kind, checked)
@@ -374,6 +378,7 @@ class Studio(QtWidgets.QDialog):
     def load(self, filename):
         if self.export_job or self.closing:
             return
+        self.slate_status_active = False
         self.generation += 1
         for job in self.load_jobs:
             job.requestInterruption()
@@ -460,7 +465,7 @@ class Studio(QtWidgets.QDialog):
 
     def measured(self, milliseconds, device):
         self.last_measurement = milliseconds
-        if not self.export_job:
+        if not self.export_job and not self.slate_status_active:
             self.status.setText("Preview %d × %d · %.1f ms" % (self.preview.image.width(), self.preview.image.height(), milliseconds))
             self.status.setToolTip(device + "\nTiming includes GPU completion; export uses full resolution.")
 
@@ -499,7 +504,20 @@ class Studio(QtWidgets.QDialog):
         except ValueError:
             return False  # Different Windows drives.
 
+    def open_source_folder(self, unused_position=None):
+        self.slate_status_active = True
+        if not self.filename or not os.path.isfile(self.filename):
+            self.status.setText("Source image is missing. Load an existing image to open its folder.")
+        else:
+            folder = os.path.dirname(os.path.abspath(self.filename))
+            if QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(folder)):
+                self.status.setText("Opened source folder: " + folder)
+            else:
+                self.status.setText("Could not open source folder: " + folder)
+        self.status.setToolTip(self.status.text())
+
     def save(self):
+        self.slate_status_active = False
         if self.image is None or self.export_job:
             return
         kinds = [kind for kind in MAPS if self.map_checks[kind].isChecked()]
@@ -577,13 +595,16 @@ class Studio(QtWidgets.QDialog):
     def add_selected_to_slate(self):
         if self.export_job:
             return
+        self.slate_status_active = True
         kinds = [kind for kind in MAPS if self.map_checks[kind].isChecked()]
         labels = dict(zip(MAPS, ("Normal", "Displace", "AO", "Specular")))
         if not kinds:
             self.status.setText("Select maps in Set to add to Slate.")
+            self.status.setToolTip(self.status.text())
             return
         if not self.filename:
             self.status.setText("Load a source image before adding its saved maps.")
+            self.status.setToolTip(self.status.text())
             return
         extension = {"JPEG": ".jpg", "PNG": ".png", "TIFF": ".tif"}[self.format.currentData()]
         files, missing = saved_maps.resolve(self.geometry_settings, self.filename, kinds,
@@ -591,13 +612,17 @@ class Studio(QtWidgets.QDialog):
         missing_text = "Missing: " + ", ".join(labels[k] for k in missing) if missing else ""
         if not files:
             self.status.setText(missing_text + ". Save these maps first.")
+            self.status.setToolTip(self.status.text())
             return
         try:
             from .maxbridge import add_to_slate
-            add_to_slate(files)
+            add_to_slate(files, progress=lambda step: self.status.setText("Slate: " + step))
         except Exception as exc:
-            self.status.setText("Slate addition did not complete; inspect Slate before retrying.")
-            self.status.setToolTip(str(exc) + ("\n" + missing_text if missing else ""))
+            detail = "Slate error: " + str(exc)
+            self.status.setText(detail)
+            self.status.setToolTip(detail + "\nInspect Slate before retrying; some nodes may have been created."
+                                   + ("\n" + missing_text if missing else ""))
+            self.raise_()
             return
         message = "Added: " + ", ".join(labels[k] for k, filename in files)
         if missing_text:
