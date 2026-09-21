@@ -11,4 +11,4 @@ Turn one height image into **Normal**, **Displacement**, **Ambient Occlusion** a
 
 **Installation:** for an MZP distribution, drag the `.mzp` into 3ds Max, confirm installation, and launch Height Map Studio from the **MaxPkg** category. For the portable ZIP, extract the whole folder and run `Launch.ms` through **Scripting > Run Script**.
 
-Prefer browsing tools through a package manager? Visit [maxpkg.dev](https://maxpkg.dev) for MaxPkg and its available tools. This link does not imply that Height Map Studio is already listed there.
+You can also browse and install 3ds Max tools with [MaxPkg](https://maxpkg.dev). Check its catalogue for available packages.
