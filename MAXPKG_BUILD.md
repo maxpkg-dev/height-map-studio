@@ -20,7 +20,7 @@ was no legacy installer to replace. No custom hooks or duplicate startup actions
 are needed. Existing QSettings remain in the user's profile and are intentionally
 preserved across updates and uninstall. No source files are removed by packaging.
 
-`maxpkg-icon.svg` is an original editable vector relief-map icon. It uses a square
+`maxpkg-icon.svg` is an original editable vector topographic-contour icon. It uses a square
 64-unit canvas and was rendered locally for visual review; it is not AI raster art.
 The packager includes it as `icons/icon.svg`.
 
@@ -37,3 +37,6 @@ returned Transport closed. No instance was selected and no build call ran.
 Official API validation/build, archive inspection, installation, installed launch,
 update preservation and uninstall remain unverified. No push or publication is
 part of this local-only workflow.
+
+The revised contour icon was rendered and visually checked at 32, 64 and 512 pixels.
+Its bright contour rings replace the rejected pyramid-and-layers artwork.
