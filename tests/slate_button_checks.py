@@ -53,10 +53,11 @@ def run():
             assert len(selected) == 2
             selected.sort(key=lambda n: n.position.y)
             assert selected[0].position.x == selected[1].position.x
-            assert selected[1].position.y - selected[0].position.y >= selected[0].height + 79
+            gap = float(selected[1].position.y - selected[0].position.y - selected[0].height)
+            assert 19.0 <= gap <= 21.0, gap
             assert (float(old.position.x), float(old.position.y)) == old_position
             assert {str(n.reference.filename) for n in selected} == {str(normal), str(ao)}
-            results.append("two checked maps added despite Specular tab; exact paths; vertical nonoverlapping nodes selected; old node unchanged")
+            results.append("two checked maps added despite Specular tab; exact paths; vertical nodes with measured 20-unit boundary gap selected; old node unchanged")
             ao.unlink()
             window.add_selected_to_slate()
             assert window.status.text() == "Added: Normal | Missing: AO"

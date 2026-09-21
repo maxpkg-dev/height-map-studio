@@ -199,3 +199,35 @@ Settings and promotion source hashes were unchanged. No Settings tests, browser 
 scene resets, or modal file-dialog tests were run. The exporter itself was not rerun;
 this check covered the changed completion handler and separate Slate action.
 Earlier automatic-Add-to-Slate test records describe the superseded checkbox behavior.
+
+## Promotional text styling
+
+Verified through the active project Launch in Max 2027: the rotating promotional
+text is left-aligned and underlined, with transparent background and no border.
+The separate heart Donate button uses the blue Save accent, remains enabled and
+non-checkable, and retains its heart and destination URL. The rotation timer
+remains active. Screenshot reviewed; no links opened. Settings was unchanged.
+
+## Compact Slate spacing and sphere default
+
+Max 2027 checks passed: new vertical Slate nodes have a measured 20-unit gap
+between actual node boundaries, with selected-node framing and old positions
+preserved. The bounded Slate-button regression also passed missing-file and
+persisted-path checks again. Its owned View was cleaned up.
+
+A fresh Studio starts with Sphere and its icon selected. Explicit Cube and Plane
+choices survived 2D/3D switching without changing map values. Shape choice is
+session state, not a saved preference. Source reload preserves explicit choices;
+an older implicit Plane default is replaced by the new Sphere default.
+
+## Settings Donate footer
+
+Added the shared blue heart Donate button to the left of the existing Close button.
+Both Donate buttons now use one helper for their style and destination URL. No
+range controls, About content, or settings behavior were changed. Browser opening
+is connected only to button activation.
+
+Python 3.7 syntax and ZIP/source equality checks passed. The MCP transport closed
+during the requested Launch reload; the follow-up Settings inspection also returned
+Transport closed. No further live calls were attempted. This new footer layout has
+NOT been runtime-verified and no Settings screenshot was obtained for this update.

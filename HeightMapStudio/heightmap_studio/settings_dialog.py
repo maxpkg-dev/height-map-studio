@@ -3,6 +3,7 @@ from . import __version__
 from .qt import QtCore, QtWidgets
 from .controls import NumberSpinBox
 from .ranges import GROUPS
+from .promotion import donate_button
 
 
 class SettingsDialog(QtWidgets.QDialog):
@@ -58,6 +59,8 @@ class SettingsDialog(QtWidgets.QDialog):
         close_button.setAutoDefault(False)
         close_button.clicked.connect(self.close)
         footer = QtWidgets.QHBoxLayout()
+        self.donate = donate_button(self)
+        footer.addWidget(self.donate)
         footer.addStretch()
         footer.addWidget(close_button)
         layout.addLayout(footer)

@@ -50,7 +50,7 @@ def add_to_slate(files):
             if node == rt.undefined:
                 raise RuntimeError("Could not add a Bitmap node to Slate.")
             nodes.append(node)
-            next_y += max(200.0, float(node.height)) + 80.0
+            next_y += float(node.height) + 20.0
     # Both NodeView methods are documented from Max 2014 onward.
     # Pass material/map references, not Slate node interfaces.
     view.SetSelectedNodes(rt.Array(*textures))

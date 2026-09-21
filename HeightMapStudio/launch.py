@@ -33,6 +33,7 @@ def launch(root):
                         filename=previous.filename, label=previous.file_label.text(),
                         settings=dict(previous.settings), tab=previous.tabs.currentIndex(),
                         mode=previous.mode.currentIndex(), shape=previous.shape.currentIndex(),
+                        shape_explicit=getattr(previous, "shape_explicit", previous.shape.currentIndex() != 0),
                         source=previous.source.isChecked(), advanced=previous.advanced_toggle.isChecked(),
                         zoom=previous.preview.zoom, pan=list(previous.preview.pan),
                         rotation=list(previous.preview.rotation), light=previous.preview.light_angle)
@@ -58,7 +59,9 @@ def launch(root):
         window.seamless.setChecked(snapshot["settings"]["seamless"])
         window.tabs.setCurrentIndex(snapshot["tab"])
         window.mode.setCurrentIndex(snapshot["mode"])
-        window.shape.setCurrentIndex(snapshot["shape"])
+        if snapshot["shape_explicit"]:
+            window.shape.setCurrentIndex(snapshot["shape"])
+            window.shape_explicit = True
         window.source.setChecked(snapshot["source"])
         window.advanced_toggle.setChecked(snapshot["advanced"])
         if snapshot["image"] is not None:

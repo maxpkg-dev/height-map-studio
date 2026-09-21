@@ -125,6 +125,7 @@ class Studio(QtWidgets.QDialog):
         self.last_directory = ""
         self.last_measurement = None
         self.settings_dialog = None
+        self.shape_explicit = False
         self.timer = QtCore.QTimer(self)
         self.timer.setSingleShot(True)
         self.timer.setInterval(80)
@@ -438,6 +439,7 @@ class Studio(QtWidgets.QDialog):
         self.preview.update()
 
     def shape_changed(self, index):
+        self.shape_explicit = True
         self.preview.shape = index
         self.preview.update()
 

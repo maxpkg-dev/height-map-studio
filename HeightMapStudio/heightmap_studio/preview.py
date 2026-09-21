@@ -23,8 +23,9 @@ class Preview(QOpenGLWidget):
         self.kind = "normal"
         self.show_source = False
         self.is_3d = False
-        self.shape = 0  # Plane, sphere, cube.
+        self.shape = 1  # Plane, sphere, cube; start with the sphere.
         self.shape_selector = MapMode(self, shapes=True)
+        self.shape_selector.setCurrentIndex(self.shape)
         self.shape_selector.hide()
         self.fit_button = QtWidgets.QPushButton(self)
         self.fit_button.setAutoDefault(False)

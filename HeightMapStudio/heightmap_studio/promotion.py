@@ -10,6 +10,21 @@ PROMOTIONS = (
 )
 
 
+def donate_button(parent):
+    button = QtWidgets.QPushButton("\u2665 Donate", parent)
+    button.setFixedSize(92, 26)
+    button.setAutoDefault(False)
+    button.setDefault(False)
+    button.setCursor(QtCore.Qt.PointingHandCursor)
+    button.setStyleSheet("QPushButton { background: #386fc1; color: #e6eaf0; "
+                        "border: 1px solid #578bdd; padding: 2px 6px; font-size: 11px; } "
+                        "QPushButton:hover, QPushButton:focus { background: #467fd0; border-color: #a1c6ff; } "
+                        "QPushButton:pressed { background: #2d5da6; }")
+    button.setToolTip("Support Height Map Studio\n" + DONATION[1])
+    button.clicked.connect(lambda: QtGui.QDesktopServices.openUrl(QtCore.QUrl(DONATION[1])))
+    return button
+
+
 class PromotionLink(QtWidgets.QPushButton):
     def __init__(self, parent=None):
         super(PromotionLink, self).__init__(parent)
@@ -20,9 +35,14 @@ class PromotionLink(QtWidgets.QPushButton):
         self.setAutoDefault(False)
         self.setDefault(False)
         self.setCursor(QtCore.Qt.PointingHandCursor)
-        self.setStyleSheet("QPushButton { background: #252e3b; color: #a1c6ff; "
-                           "border: 1px solid #3c485a; padding: 2px 6px; font-size: 11px; } "
-                           "QPushButton:hover, QPushButton:focus { background: #303e51; border-color: #6a88b2; }")
+        self.setFlat(True)
+        link_font = self.font()
+        link_font.setUnderline(True)
+        self.setFont(link_font)
+        self.setStyleSheet("QPushButton { background: transparent; color: #a1c6ff; "
+                           "border: none; padding: 2px 0; font-size: 11px; text-align: left; } "
+                           "QPushButton:hover, QPushButton:focus, QPushButton:pressed { "
+                           "background: transparent; border: none; color: #d0e3ff; }")
         self.index = 0
         self.record = DONATION
         self.timer = QtCore.QTimer(self)
@@ -70,16 +90,6 @@ class PromotionStrip(QtWidgets.QWidget):
         layout.setSpacing(6)
         self.link = PromotionLink(self)
         self.timer = self.link.timer
-        self.donate = QtWidgets.QPushButton("\u2665 Donate", self)
-        self.donate.setFixedSize(92, 26)
-        self.donate.setAutoDefault(False)
-        self.donate.setDefault(False)
-        self.donate.setCursor(QtCore.Qt.PointingHandCursor)
-        self.donate.setStyleSheet(self.link.styleSheet())
-        self.donate.setToolTip("Support Height Map Studio\n" + DONATION[1])
-        self.donate.clicked.connect(self.open_donation)
+        self.donate = donate_button(self)
         layout.addWidget(self.link, 1)
         layout.addWidget(self.donate)
-
-    def open_donation(self):
-        QtGui.QDesktopServices.openUrl(QtCore.QUrl(DONATION[1]))
