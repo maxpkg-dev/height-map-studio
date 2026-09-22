@@ -64,8 +64,8 @@ def run_settings_checks():
         assert restored.settings["disp_contrast"] == 0.15
         assert restored.parameters["disp_contrast"].spin.value() == 0.15
         set_groups = [group for group in restored.findChildren(QtWidgets.QGroupBox) if group.title() == "Set"]
-        assert len(set_groups) == 1 and set_groups[0].height() == restored.save_button.height() + 8 == 42
-        assert set_groups[0].parentWidget().height() == 50
+        assert len(set_groups) == 1 and set_groups[0].height() == restored.save_button.height() + 9 == 43
+        assert set_groups[0].parentWidget().height() == 52
         assert [check.text() for check in restored.map_checks.values()] == ["Normal", "Displace", "AO", "Specular"]
         assert window.settings_button.height() == window.open_button.height()
         assert window.settings_button.width() == window.open_button.width()

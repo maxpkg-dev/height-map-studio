@@ -304,7 +304,7 @@ class Studio(QtWidgets.QDialog):
         set_group = QtWidgets.QGroupBox("Set")
         # QGroupBox reserves eight pixels above its frame for the title. Give the
         # widget that extra height and lift it so the visible frame aligns with Save.
-        set_group.setFixedHeight(42)
+        set_group.setFixedHeight(43)
         set_row = QtWidgets.QHBoxLayout(set_group)
         set_row.setContentsMargins(8, 7, 8, 3)
         set_row.setSpacing(8)
@@ -316,9 +316,9 @@ class Studio(QtWidgets.QDialog):
             self.map_checks[kind] = check
             set_row.addWidget(check)
         set_container = QtWidgets.QWidget()
-        set_container.setFixedHeight(50)
+        set_container.setFixedHeight(52)
         set_container_layout = QtWidgets.QVBoxLayout(set_container)
-        set_container_layout.setContentsMargins(0, 0, 0, 8)
+        set_container_layout.setContentsMargins(0, 0, 0, 9)
         set_container_layout.addWidget(set_group)
         export_row.addWidget(set_container)
         layout.addSpacing(10)
