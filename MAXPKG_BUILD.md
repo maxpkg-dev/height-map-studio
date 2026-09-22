@@ -5,7 +5,7 @@ The root packager and both standard hooks are original upstream files from
 The official Adaptation prompt and Automation API were reviewed at that revision.
 
 Run `maxpkg-packager.ms` in 3ds Max and click **Build MZP**. The saved configuration
-targets the root `dist` folder. It uses Free classification, version 1.0.0, beta
+targets the root `dist` folder. It uses Free classification, version 1.1.0, beta
 channel, and minimum Max 2022. Max 2022 launch is user-verified; the wider test
 history is in `HeightMapStudio/TEST_RESULTS.md`.
 
@@ -29,19 +29,18 @@ does. If moving this checkout, update the Files List, icon and output paths in t
 packager. Those authoring paths must not appear in the generated runtime manifest.
 The package identity is stored only in the configuration and build metadata.
 
-Current verification: official tooling hash equality, input-file completeness,
-SVG validity, Python 3.7 syntax, isolated accelerator tests, real Qt 5.15.1 focus
-events outside Max, and sample race guards. After a user-authorized connection
-check, max_list_instances still returned Transport closed; the agent did not run
-the official build API or any installation operation.
+Version 1.1.0 was built in Max 2027 through the official MaxPkgPackerApi after
+successful reload and validation. Archive verification found 39 entries, all 31
+runtime files byte-identical to source, original hooks and icon, correct beta/Max
+2022 metadata, valid CRCs, and no authoring paths in the manifests/bootstrap.
 
-An MZP subsequently appeared in dist during user activity. Static inspection found
-39 entries, matching runtime files, sample, accepted icon and original hooks, valid
-manifest identity/Free beta metadata, correct entry, and no developer paths in the
-manifests/bootstrap. Its CRC check passed. The expanded artist README was changed
-after that inspection, so this existing MZP is now stale and must be rebuilt before
-release. Installation, installed launch, update and uninstall remain unverified.
-No push or publication was performed.
+The new controls passed real Qt/GPU checks using the bundled Max 2022 and Max
+2027 Python runtimes. Isolated fixture tests also passed inside Max 2027 through
+Max Ultra MCP: map-local Reset, AO Threshold, Specular Compress and background
+PNG/TIFF exports across a tile boundary. Displacement retains 16-bit precision;
+blurred tiled/full results agree within one 16-bit level. Source launch succeeded.
+Installation, installed launch, update and uninstall were not repeated for this
+release; archive verification is not an installation test.
 
 The revised contour icon was rendered and visually checked at 32, 64 and 512 pixels.
 Its bright contour rings replace the rejected pyramid-and-layers artwork.

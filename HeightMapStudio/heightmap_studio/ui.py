@@ -229,7 +229,7 @@ class Studio(QtWidgets.QDialog):
         self.reset.setStyleSheet("QPushButton { font-size: 10px; padding: 1px 4px; }")
         self.reset.setFixedHeight(20)
         self.reset.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        self.reset.setToolTip("Restore map settings to their defaults")
+        self.reset.setToolTip("Restore only the current map's parameters; keep shared height and edge options")
         self.reset.clicked.connect(self.reset_settings)
         self.advanced_toggle.setStyleSheet(self.reset.styleSheet())
         self.advanced_toggle.setFixedHeight(20)
@@ -457,11 +457,11 @@ class Studio(QtWidgets.QDialog):
         self.advanced_toggle.setText("▾ Advanced" if checked else "▸ Advanced")
 
     def reset_settings(self):
-        for key, control in self.parameters.items():
-            control.set_value(DEFAULTS[key])
-        self.convention.setCurrentIndex(0)
-        self.invert.setChecked(False)
-        self.seamless.setChecked(False)
+        index = self.tabs.currentIndex()
+        for key, label, low, high, maximum in GROUPS[index][1]:
+            self.parameters[key].set_value(DEFAULTS[key])
+        if index == 0:
+            self.convention.setCurrentIndex(0)
 
     def measured(self, milliseconds, device):
         self.last_measurement = milliseconds

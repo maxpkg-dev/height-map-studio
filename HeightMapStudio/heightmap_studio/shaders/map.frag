@@ -4,7 +4,7 @@ out vec4 color;
 uniform sampler2D heightMap;
 uniform int mode;
 uniform vec2 texel, pixelScale;
-uniform float strength, contrast, level, radius, aoStrength;
+uniform float strength, contrast, level, radius, aoStrength, aoThreshold, specCompress;
 uniform bool directx;
 uniform vec2 boundsMin, boundsMax;
 uniform bool clampBounds;
@@ -35,7 +35,7 @@ void main() {
             for (int step=1; step<=6; ++step) {
                 float distance = max(1.0, radius * float(step) / 6.0);
                 float delta = h(uv + d * distance * texel / pixelScale) - center;
-                horizon = max(horizon, max(0.0, delta) * radius / distance);
+                horizon = max(horizon, max(0.0, delta - aoThreshold) * radius / distance);
             }
             occlusion += horizon;
         }
@@ -43,6 +43,7 @@ void main() {
         color = vec4(vec3(ao), 1.0);
     } else {
         float v = clamp((center-0.5)*contrast+0.5+level, 0.0, 1.0);
+        if (mode == 3) v = mix(v, 0.5, clamp(specCompress, 0.0, 1.0));
         color = vec4(vec3(v), 1.0);
     }
 }

@@ -6,14 +6,16 @@ Create **Normal, Displacement, Ambient Occlusion and Specular** maps from one he
 
 Drag a **PNG, TIFF or JPG** into the window, or click **Open image**. A bundled sample loads automatically in a new empty window, so you can try the controls immediately.
 
-Choose a map tab and adjust its two main controls:
+Choose a map tab and adjust its controls:
 
 | Map | Controls | Use |
 | --- | --- | --- |
 | Normal | Strength, Blur | Control the apparent surface detail. |
-| Displacement | Contrast, Level | Adjust the height range and offset. |
-| AO | Strength, Radius | Approximate shading around height features. |
-| Specular | Brightness, Contrast | Create a height-based specular mask. |
+| Displacement | Contrast, Level, Blur | Adjust the height range and offset; soften detail. |
+| AO | Strength, Radius, Threshold | Approximate shading and suppress shallow height detail. |
+| Specular | Brightness, Contrast, Compress | Create a height-based mask and bring its extremes toward gray. |
+
+Normal and Displacement have independent **Blur** controls (0–16 source-image pixels). **AO Threshold** ignores height differences up to the chosen value (0–1); larger differences contribute only their excess. Zero preserves the original AO. **Specular Compress** blends the finished mask toward 50% gray, after Brightness and Contrast: 0 leaves it unchanged, 0.5 brings black/white to 25%/75%, and 1 makes the mask uniformly gray. These controls affect both preview and saved maps.
 
 AO and Specular are approximations from the height image, not measurements of the original material. **Advanced** contains OpenGL/DirectX normal orientation, height inversion and wrapped edge filtering. Wrapped filtering works best with an already seamless source.
 
@@ -27,7 +29,7 @@ Switch between **2D** and **3D** without losing your map settings. The 3D previe
 - **Source:** inspect the original image in 2D.
 - **Fit** in 2D, **Reset view** in 3D, or double-click: restore the view, zoom and light position.
 
-The preview helps judge surface detail; it is not a final renderer result. **Reset settings** restores map controls separately from the view. **Settings** lets you adjust slider maximums.
+The preview helps judge surface detail; it is not a final renderer result. **Reset settings** restores only the active map's controls. On Normal it also restores OpenGL orientation; other maps, Invert height, Seamless edges and the view keep their settings. **Settings** lets you adjust slider maximums.
 
 ## Save your maps
 

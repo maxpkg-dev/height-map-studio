@@ -26,15 +26,18 @@ available screen area. Placement is stored in per-user Qt settings under HeightM
 | Map | Main settings |
 |---|---|
 | Normal | Strength, Blur |
-| Displacement | Contrast, Level |
-| AO | Strength, Radius |
-| Specular | Brightness, Contrast |
+| Displacement | Contrast, Level, Blur |
+| AO | Strength, Radius, Threshold |
+| Specular | Brightness, Contrast, Compress |
 
-Each map retains its settings when switching tabs. **Reset settings** restores all defaults.
-The reset button is inside **Map Settings** and changes map parameters only.
+Each map retains its settings when switching tabs. **Reset settings** restores only the active map's parameters, plus OpenGL orientation when Normal is active. Shared inversion and seamless edges remain unchanged.
+The reset button is inside **Map Settings**.
 Normal Strength's slider covers 0–20; manual entry accepts values up to 1,000,000.
 Values above 20 stay intact while the slider rests at its upper end.
 Blur and AO radii are measured in source-image pixels.
+Normal and Displacement have independent Blur settings (0–16 px, default 0).
+AO Threshold (0–1, default 0) subtracts from positive neighbor-to-center height differences before horizon weighting. It is independent of absolute input brightness.
+Specular Compress (0–1, default 0) mixes the clipped brightness/contrast result toward 0.5. This also compresses values already clipped to black or white.
 Slider updates use an 80 ms debounce: processing starts after the latest change settles.
 
 The small **Advanced** button sits beside Reset settings inside **Map Settings**. It reveals

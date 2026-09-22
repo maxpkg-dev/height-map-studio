@@ -8,7 +8,9 @@ root = Path(__file__).resolve().parent
 source = root / "HeightMapStudio"
 # The root artist guide is the single editable source for both delivery contexts.
 (source / "README.md").write_bytes((root / "README.md").read_bytes())
-target = root / "dist" / "HeightMapStudio-1.0.0.zip"
+version = re.search(r'^__version__ = "(\d+\.\d+\.\d+)"',
+                    (source / "heightmap_studio/__init__.py").read_text(encoding="utf8"), re.MULTILINE).group(1)
+target = root / "dist" / ("HeightMapStudio-" + version + ".zip")
 target.parent.mkdir(exist_ok=True)
 with ZipFile(str(target), "w", ZIP_DEFLATED) as archive:
     for filename in sorted(source.rglob("*")):
