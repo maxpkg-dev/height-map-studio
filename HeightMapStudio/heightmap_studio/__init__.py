@@ -1,2 +1,2 @@
-"""Height Map Studio, version 1.1.0."""
-__version__ = "1.1.0"
+"""Height Map Studio, version 1.1.1."""
+__version__ = "1.1.1"

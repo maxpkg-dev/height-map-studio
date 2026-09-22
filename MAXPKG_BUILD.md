@@ -5,7 +5,7 @@ The root packager and both standard hooks are original upstream files from
 The official Adaptation prompt and Automation API were reviewed at that revision.
 
 Run `maxpkg-packager.ms` in 3ds Max and click **Build MZP**. The saved configuration
-targets the root `dist` folder. It uses Free classification, version 1.1.0, beta
+targets the root `dist` folder. It uses Free classification, version 1.1.1, beta
 channel, and minimum Max 2022. Max 2022 launch is user-verified; the wider test
 history is in `HeightMapStudio/TEST_RESULTS.md`.
 
@@ -31,7 +31,7 @@ does. If moving this checkout, update the Files List, icon and output paths in t
 packager. Those authoring paths must not appear in the generated runtime manifest.
 The package identity is stored only in the configuration and build metadata.
 
-Version 1.1.0 was built in Max 2027 through the official MaxPkgPackerApi after
+Version 1.1.1 was built in Max 2027 through the official MaxPkgPackerApi after
 successful reload and validation. Archive verification found 39 entries, all 31
 runtime files byte-identical to source, original hooks and icon, correct beta/Max
 2022 metadata, valid CRCs, and no authoring paths in the manifests/bootstrap.
@@ -44,5 +44,5 @@ blurred tiled/full results agree within one 16-bit level. Source launch succeede
 Installation, installed launch, update and uninstall were not repeated for this
 release; archive verification is not an installation test.
 
-Unreleased changes after 1.1.0 are local. The next release should use a patch
-increment (1.1.1); do not replace the published 1.1.0 tag or package.
+The published 1.1.0 tag and package remain immutable; later work should use a
+new semantic version rather than replacing an existing release.
