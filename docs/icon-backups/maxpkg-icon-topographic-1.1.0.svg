@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <title>Height Map Studio - Topographic Relief</title>
+  <defs>
+    <linearGradient id="surface" x1="8" y1="4" x2="56" y2="60" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3489ee"/><stop offset="1" stop-color="#204da5"/>
+    </linearGradient>
+    <linearGradient id="contours" x1="16" y1="51" x2="42" y2="12" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#77c7ff"/><stop offset="1" stop-color="#e4faff"/>
+    </linearGradient>
+  </defs>
+  <rect x="1" y="1" width="62" height="62" rx="15" fill="url(#surface)"/>
+  <rect x="1.75" y="1.75" width="60.5" height="60.5" rx="14.25" fill="none" stroke="#89c7ff" stroke-opacity="0.4" stroke-width="1.5"/>
+  <g fill="none" stroke="url(#contours)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10 39C10 30 18 28 21 20C24 12 30 9 37 10C46 11 47 20 51 26C56 34 54 43 47 47C40 51 39 55 30 54C20 53 10 49 10 39Z"/>
+    <path d="M17 39C17 33 24 29 26 22C28 16 32 15 37 17C42 19 42 25 46 30C50 36 47 41 41 44C37 46 36 49 30 47C24 46 17 45 17 39Z"/>
+    <path d="M24 38C24 33 29 29 31 24C33 20 36 22 37 26C38 31 43 33 41 37C39 41 34 42 30 41C27 41 24 41 24 38Z"/>
+  </g>
+  <path d="M31 35C31 32 33 29 34 31C35 33 37 34 35 36C33 38 30 38 31 35Z" fill="#e4faff"/>
+</svg>

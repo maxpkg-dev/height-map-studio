@@ -1,19 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
-  <title>Height Map Studio - Topographic Relief</title>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64" height="64" viewBox="0 0 64 64">
+  <title>Height Map Studio - Normal Map Tiles</title>
+  <desc>Four raised rounded tiles with cyan, blue, pink and violet normal-map edges on a purple surface.</desc>
   <defs>
-    <linearGradient id="surface" x1="8" y1="4" x2="56" y2="60" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#3489ee"/><stop offset="1" stop-color="#204da5"/>
+    <linearGradient id="top" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#75f1de"/><stop offset="1" stop-color="#8181ff" stop-opacity="0"/>
     </linearGradient>
-    <linearGradient id="contours" x1="16" y1="51" x2="42" y2="12" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#77c7ff"/><stop offset="1" stop-color="#e4faff"/>
+    <linearGradient id="bottom" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#8181ff" stop-opacity="0"/><stop offset="1" stop-color="#8229db"/>
     </linearGradient>
+    <linearGradient id="left" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#3278ea"/><stop offset="1" stop-color="#8181ff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="right" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#8181ff" stop-opacity="0"/><stop offset="1" stop-color="#ef83d8"/>
+    </linearGradient>
+    <g id="tile">
+      <rect width="22" height="22" rx="4.5" fill="#8181ff"/>
+      <path d="M6 0H4.5Q0 0 0 4.5V17.5Q0 22 4.5 22H6Z" fill="url(#left)"/>
+      <path d="M16 0H17.5Q22 0 22 4.5V17.5Q22 22 17.5 22H16Z" fill="url(#right)"/>
+      <path d="M0 6V4.5Q0 0 4.5 0H17.5Q22 0 22 4.5V6Z" fill="url(#top)"/>
+      <path d="M0 16V17.5Q0 22 4.5 22H17.5Q22 22 22 17.5V16Z" fill="url(#bottom)"/>
+    </g>
   </defs>
-  <rect x="1" y="1" width="62" height="62" rx="15" fill="url(#surface)"/>
-  <rect x="1.75" y="1.75" width="60.5" height="60.5" rx="14.25" fill="none" stroke="#89c7ff" stroke-opacity="0.4" stroke-width="1.5"/>
-  <g fill="none" stroke="url(#contours)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M10 39C10 30 18 28 21 20C24 12 30 9 37 10C46 11 47 20 51 26C56 34 54 43 47 47C40 51 39 55 30 54C20 53 10 49 10 39Z"/>
-    <path d="M17 39C17 33 24 29 26 22C28 16 32 15 37 17C42 19 42 25 46 30C50 36 47 41 41 44C37 46 36 49 30 47C24 46 17 45 17 39Z"/>
-    <path d="M24 38C24 33 29 29 31 24C33 20 36 22 37 26C38 31 43 33 41 37C39 41 34 42 30 41C27 41 24 41 24 38Z"/>
-  </g>
-  <path d="M31 35C31 32 33 29 34 31C35 33 37 34 35 36C33 38 30 38 31 35Z" fill="#e4faff"/>
+  <rect x="1" y="1" width="62" height="62" rx="14" fill="#8080ff"/>
+  <use xlink:href="#tile" x="8" y="8"/>
+  <use xlink:href="#tile" x="34" y="8"/>
+  <use xlink:href="#tile" x="8" y="34"/>
+  <use xlink:href="#tile" x="34" y="34"/>
 </svg>

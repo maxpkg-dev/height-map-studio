@@ -20,9 +20,11 @@ was no legacy installer to replace. No custom hooks or duplicate startup actions
 are needed. Existing QSettings remain in the user's profile and are intentionally
 preserved across updates and uninstall. No source files are removed by packaging.
 
-`maxpkg-icon.svg` is an original editable vector topographic-contour icon. It uses a square
-64-unit canvas and was rendered locally for visual review; it is not AI raster art.
-The packager includes it as `icons/icon.svg`.
+The current `maxpkg-icon.svg` is an editable normal-map tile design on a square
+64-unit canvas, with Qt-rendered previews at 16, 24, 32, 64 and 512 pixels. The
+previous released contour icon is preserved in
+`docs/icon-backups/maxpkg-icon-topographic-1.1.0.svg`. The packager includes only
+the current icon as `icons/icon.svg`. The new design remains pending review.
 
 The saved authoring INI uses local absolute source paths, as the official packager
 does. If moving this checkout, update the Files List, icon and output paths in the
@@ -42,5 +44,5 @@ blurred tiled/full results agree within one 16-bit level. Source launch succeede
 Installation, installed launch, update and uninstall were not repeated for this
 release; archive verification is not an installation test.
 
-The revised contour icon was rendered and visually checked at 32, 64 and 512 pixels.
-Its bright contour rings replace the rejected pyramid-and-layers artwork.
+Unreleased changes after 1.1.0 are local. The next release should use a patch
+increment (1.1.1); do not replace the published 1.1.0 tag or package.
