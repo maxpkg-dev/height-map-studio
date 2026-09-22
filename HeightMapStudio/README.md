@@ -11,7 +11,7 @@ Choose a map tab and adjust its two main controls:
 | Map | Controls | Use |
 | --- | --- | --- |
 | Normal | Strength, Blur | Control the apparent surface detail. |
-| Displacement | Contrast, Level | Adjust the height range and offset. |
+| Displacement | Contrast, Level, Blur | Adjust the height range and offset, and smooth detail. |
 | AO | Strength, Radius | Approximate shading around height features. |
 | Specular | Brightness, Contrast | Create a height-based specular mask. |
 

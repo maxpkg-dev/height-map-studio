@@ -14,6 +14,8 @@ automatic-Slate argument. They are retained as development evidence, not claimed
 as passing current regression tests. Do not run all files as a batch.
 
 Current standalone checks (run with the bundled Max 2022 Python 3.7):
+- `displacement_blur_checks.py`: real Qt controls and GPU blur, map independence,
+  preview scaling, zero-blur 16-bit precision, and tiled export borders.
 - `accelerator_checks.py`: isolated focus-adapter lifecycle and capability behavior.
 - `qt5_focus_checks.py`: real Qt5 widget events with a test accelerator-state object.
 - `source_folder_checks.py`: real Qt5 context-menu dispatch without opening Explorer.

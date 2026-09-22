@@ -201,11 +201,12 @@ class Engine:
         height = self.texture("height", wrap=wrap)
         self._target(height)
         self._draw("height", {"source": self.textures["source"]}, {"invertHeight": settings["invert"]})
-        if kind == "normal" and settings["blur"] > 0.0:
+        blur = settings["blur"] if kind == "normal" else settings["disp_blur"] if kind == "displacement" else 0.0
+        if blur > 0.0:
             for index, axis in enumerate(((1.0, 0.0), (0.0, 1.0))):
                 target = self.texture("blur%d" % index, wrap=wrap)
                 self._target(target)
-                sigma = settings["blur"] / scale[index]
+                sigma = blur / scale[index]
                 self._draw("blur", {"heightMap": height},
                            dict(edges, axis=axis, sigma=float(sigma),
                                 texel=(1.0 / self.width, 1.0 / self.height)))
