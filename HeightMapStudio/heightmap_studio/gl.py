@@ -4,6 +4,7 @@ Every object belongs to the current context. Call close before releasing it.
 """
 import ctypes as C
 import os
+import math
 from .qt import image_bytes
 
 U, I, F, P = C.c_uint, C.c_int, C.c_float, C.c_void_p
@@ -201,6 +202,22 @@ class Engine:
         height = self.texture("height", wrap=wrap)
         self._target(height)
         self._draw("height", {"source": self.textures["source"]}, {"invertHeight": settings["invert"]})
+        if kind == "normal" and settings["detail_size"] > 0.0:
+            # Eight line directions form a nearly circular 16-sided footprint.
+            # Opening then closing creates plateaus without square-kernel corners.
+            radius = settings["detail_size"] * 0.5 * math.tan(math.pi / 16.0)
+            index = 0
+            for mode, multiple in ((1, 1.0), (2, 2.0), (1, 1.0)):
+                for direction in range(8):
+                    angle = direction * math.pi / 8.0
+                    target = self.texture("detail%d" % (index % 2), wrap=wrap)
+                    self._target(target)
+                    self._draw("blur", {"heightMap": height}, dict(edges,
+                        axis=(math.cos(angle) / scale[0], math.sin(angle) / scale[1]),
+                        filterMode=mode, filterRadius=float(radius * multiple),
+                        texel=(1.0 / self.width, 1.0 / self.height)))
+                    height = target
+                    index += 1
         blur = settings["blur"] if kind == "normal" else settings["disp_blur"] if kind == "displacement" else 0.0
         if blur > 0.0:
             for index, axis in enumerate(((1.0, 0.0), (0.0, 1.0))):
@@ -208,7 +225,7 @@ class Engine:
                 self._target(target)
                 sigma = blur / scale[index]
                 self._draw("blur", {"heightMap": height},
-                           dict(edges, axis=axis, sigma=float(sigma),
+                           dict(edges, axis=axis, sigma=float(sigma), filterMode=0,
                                 texel=(1.0 / self.width, 1.0 / self.height)))
                 height = target
         output = self.texture(kind, RGBA32F, wrap=wrap)

@@ -212,6 +212,8 @@ class Studio(QtWidgets.QDialog):
             page_layout.setSpacing(3)
             for key, label, low, high, maximum in fields:
                 control = Parameter(key, label, low, saved_maximum(self.geometry_settings, key), self.settings[key])
+                if key == "detail_size":
+                    control.setToolTip("Flatten small bumps and grooves into plateaus with a near-circular footprint at this scale in source pixels. Zero disables it; Blur softens the remaining edges.")
                 control.changed.connect(self.parameter_changed)
                 self.parameters[key] = control
                 page_layout.addWidget(control)
@@ -252,6 +254,7 @@ class Studio(QtWidgets.QDialog):
         self.invert.toggled.connect(lambda value: self.option_changed("invert", value))
         self.seamless = CheckBox("Seamless edges")
         self.seamless.setProperty("compactIndicator", True)
+        self.seamless.setChecked(self.settings["seamless"])
         self.seamless.setToolTip("Wrap filtering across image edges. The source image must already tile seamlessly.")
         self.seamless.toggled.connect(lambda value: self.option_changed("seamless", value))
         advanced_layout.addWidget(self.convention)

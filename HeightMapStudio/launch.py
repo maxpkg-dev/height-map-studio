@@ -36,7 +36,8 @@ def launch(root):
                         shape_explicit=getattr(previous, "shape_explicit", previous.shape.currentIndex() != 0),
                         source=previous.source.isChecked(), advanced=previous.advanced_toggle.isChecked(),
                         zoom=previous.preview.zoom, pan=list(previous.preview.pan),
-                        rotation=list(previous.preview.rotation), light=previous.preview.light_angle)
+                        rotation=list(previous.preview.rotation), light=previous.preview.light_angle,
+                        enabled_maps=dict(getattr(previous.preview, "enabled_maps", {})))
         from heightmap_studio.qt import QtCore
         previous.close()
         QtCore.QCoreApplication.sendPostedEvents(previous, QtCore.QEvent.DeferredDelete)
@@ -77,6 +78,8 @@ def launch(root):
         window.preview.pan = snapshot["pan"]
         window.preview.rotation = snapshot["rotation"]
         window.preview.light_angle = snapshot["light"]
+        for kind, enabled in snapshot["enabled_maps"].items():
+            window.preview.map_checks[kind].setChecked(enabled)
     return window
 
 

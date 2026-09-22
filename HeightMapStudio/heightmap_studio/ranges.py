@@ -3,7 +3,7 @@ import math
 
 # Each entry is (key, label, minimum, default slider maximum, processing maximum).
 GROUPS = (
-    ("Normal", (("strength", "Strength", 0, 20, 1000000), ("blur", "Blur", 0, 16, 16))),
+    ("Normal", (("strength", "Strength", 0, 20, 1000000), ("blur", "Blur", 0, 16, 16), ("detail_size", "Detail size", 0, 64, 64))),
     ("Displacement", (("disp_contrast", "Contrast", 0, 4, 1000000), ("disp_level", "Level", -1, 1, 1000000), ("disp_blur", "Blur", 0, 16, 16))),
     ("AO", (("ao_strength", "Strength", 0, 10, 1000000), ("ao_radius", "Radius", 1, 128, 128), ("ao_threshold", "Threshold", 0, 1, 1))),
     ("Specular", (("spec_brightness", "Brightness", -1, 1, 1000000), ("spec_contrast", "Contrast", 0, 4, 1000000), ("spec_compress", "Compress", 0, 1, 1))))

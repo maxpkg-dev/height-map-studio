@@ -25,7 +25,7 @@ available screen area. Placement is stored in per-user Qt settings under HeightM
 
 | Map | Main settings |
 |---|---|
-| Normal | Strength, Blur |
+| Normal | Strength, Blur, Detail size |
 | Displacement | Contrast, Level, Blur |
 | AO | Strength, Radius, Threshold |
 | Specular | Brightness, Contrast, Compress |
@@ -36,6 +36,12 @@ Normal Strength's slider covers 0–20; manual entry accepts values up to 1,000,
 Values above 20 stay intact while the slider rests at its upper end.
 Blur and AO radii are measured in source-image pixels.
 Normal and Displacement have independent Blur settings (0–16 px, default 0).
+Normal Detail size (0–64 source pixels, default 0) uses grayscale opening then
+closing. Eight directional line segments approximate a circular footprint as a
+16-sided polygon, avoiding axis-aligned square features. Adjacent dilations
+combine for 24 passes. Filter scale uses original pixels in preview and export;
+export overlap includes every directional pass plus Gaussian Blur support.
+There is no Gaussian scale-space or automatic strength gain in this control.
 AO Threshold (0–1, default 0) subtracts from positive neighbor-to-center height differences before horizon weighting. It is independent of absolute input brightness.
 Specular Compress (0–1, default 0) mixes the clipped brightness/contrast result toward 0.5. This also compresses values already clipped to black or white.
 Slider updates use an 80 ms debounce: processing starts after the latest change settles.
@@ -44,7 +50,7 @@ The small **Advanced** button sits beside Reset settings inside **Map Settings**
 compact OpenGL (+Y) / DirectX (−Y), Invert height, and Seamless edges controls to its right.
 Seamless edges wraps filtering across the image boundary. The source must already tile seamlessly;
 this option does not repair mismatched edges. Defaults: white represents raised areas, OpenGL normals,
-and filtering clamped to the image boundary.
+and Seamless edges enabled. Users can turn wrapping off manually; map-local Reset preserves this shared choice.
 
 **Preview controls:** wheel to zoom; left drag to pan in 2D or rotate in 3D;
 right drag in 3D to rotate the light; double-click or **Fit** to reset the view.

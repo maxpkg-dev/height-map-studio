@@ -14,6 +14,11 @@ automatic-Slate argument. They are retained as development evidence, not claimed
 as passing current regression tests. Do not run all files as a batch.
 
 Current standalone checks (run with the bundled Max 2022 Python 3.7):
+- `detail_preview_checks.py`: spatial feature removal versus Gaussian Blur,
+  Normal conventions/inversion, source-pixel scaling, tile borders, PNG/TIFF
+  export, all 16 material combinations on all shapes, displacement silhouettes,
+  persistent Preview menu and independence from export settings. Also runs with
+  Qt6 and inside Max using isolated fixtures.
 - `displacement_blur_checks.py`: real Qt controls and GPU blur, independent maps,
   preview scaling, all 65536 levels at zero blur, and tiled export borders.
 - `map_controls_checks.py`: tab-local Reset on every map, AO height-difference
