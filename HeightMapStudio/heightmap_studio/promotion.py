@@ -9,17 +9,22 @@ PROMOTIONS = (
     ("Explore Max Ultra MCP on maxpkg.dev", "https://maxpkg.dev/catalog/max-ultra-mcp"),
 )
 
+ORANGE = "#ff9f43"
+ORANGE_HOVER = "#ffb25f"
+ORANGE_PRESSED = "#e8892f"
+
 
 def donate_button(parent):
     button = QtWidgets.QPushButton("\u2665 Donate", parent)
-    button.setFixedSize(92, 26)
+    button.setFixedSize(94, 26)
     button.setAutoDefault(False)
     button.setDefault(False)
     button.setCursor(QtCore.Qt.PointingHandCursor)
-    button.setStyleSheet("QPushButton { background: #386fc1; color: #e6eaf0; "
-                        "border: 1px solid #578bdd; padding: 2px 6px; font-size: 11px; } "
-                        "QPushButton:hover, QPushButton:focus { background: #467fd0; border-color: #a1c6ff; } "
-                        "QPushButton:pressed { background: #2d5da6; }")
+    button.setStyleSheet("QPushButton { background: %s; color: #20252e; "
+                        "border: 1px solid %s; padding: 2px 6px; font-size: 11px; font-weight: 600; } "
+                        "QPushButton:hover, QPushButton:focus { background: %s; border-color: %s; } "
+                        "QPushButton:pressed { background: %s; }" %
+                        (ORANGE, ORANGE_HOVER, ORANGE_HOVER, ORANGE_HOVER, ORANGE_PRESSED))
     button.setToolTip("Support Height Map Studio\n" + DONATION[1])
     button.clicked.connect(lambda: QtGui.QDesktopServices.openUrl(QtCore.QUrl(DONATION[1])))
     return button
@@ -39,10 +44,11 @@ class PromotionLink(QtWidgets.QPushButton):
         link_font = self.font()
         link_font.setUnderline(True)
         self.setFont(link_font)
-        self.setStyleSheet("QPushButton { background: transparent; color: #a1c6ff; "
+        self.setStyleSheet("QPushButton { background: transparent; color: %s; "
                            "border: none; padding: 2px 0; font-size: 11px; text-align: left; } "
                            "QPushButton:hover, QPushButton:focus, QPushButton:pressed { "
-                           "background: transparent; border: none; color: #d0e3ff; }")
+                           "background: transparent; border: none; color: %s; }" %
+                           (ORANGE, ORANGE_HOVER))
         self.index = 0
         self.record = DONATION
         self.timer = QtCore.QTimer(self)

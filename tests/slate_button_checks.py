@@ -28,10 +28,12 @@ def run():
                 check.setChecked(False)
             window.add_selected_to_slate()
             assert window.status.text().startswith("Select maps")
+            assert "#ff6b6b" in window.status.styleSheet()
             window.map_checks["normal"].setChecked(True)
             window.map_checks["ao"].setChecked(True)
             window.add_selected_to_slate()
             assert "Missing: Normal, AO" in window.status.text()
+            assert "#ff6b6b" in window.status.styleSheet()
             results.append("empty selection and all missing: nonmodal status, no Slate mutation")
             normal = folder / "custom-normal.png"
             ao = folder / "custom-ao.png"
@@ -49,6 +51,7 @@ def run():
             window.auto_output.setChecked(False)
             window.add_selected_to_slate()
             assert window.status.text() == "Added: Normal, AO"
+            assert "#58c777" in window.status.styleSheet()
             selected = list(view.GetSelectedNodes())
             assert len(selected) == 2
             selected.sort(key=lambda n: n.position.y)
@@ -61,8 +64,12 @@ def run():
             ao.unlink()
             window.add_selected_to_slate()
             assert window.status.text() == "Added: Normal | Missing: AO"
+            assert "#ffb347" in window.status.styleSheet()
             assert view.GetNumNodes() == 4 and len(view.GetSelectedNodes()) == 1
             results.append("partial availability adds only existing checked files and names missing AO")
+            window.status.setText("Ordinary status")
+            assert window.status.styleSheet() == ""
+            results.append("Slate errors red, complete success green, partial warning orange; ordinary status resets to default")
             store.sync()
             reopened_store = QtCore.QSettings(str(folder / "test.ini"), QtCore.QSettings.IniFormat)
             files, missing = saved_maps.resolve(reopened_store, window.filename, ["normal", "ao"], ".jpg", False)

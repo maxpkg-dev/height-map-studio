@@ -53,6 +53,14 @@ QToolTip { background: #303846; color: #e6eaf0; border: 1px solid #578bdd; }
 """
 
 
+class StatusLabel(QtWidgets.QLabel):
+    COLORS = {"success": "#58c777", "error": "#ff6b6b", "warning": "#ffb347"}
+
+    def setText(self, text, severity="info"):
+        self.setStyleSheet("color: %s;" % self.COLORS[severity] if severity in self.COLORS else "")
+        super(StatusLabel, self).setText(text)
+
+
 class Parameter(QtWidgets.QWidget):
     changed = QtCore.Signal(str, float)
 
@@ -293,8 +301,11 @@ class Studio(QtWidgets.QDialog):
         output_row.addWidget(self.auto_output)
         output_row.addStretch()
         output_row.addWidget(self.add_slate)
-        set_row = QtWidgets.QHBoxLayout()
-        set_row.addWidget(QtWidgets.QLabel("Set:"))
+        set_group = QtWidgets.QGroupBox("Set")
+        set_group.setFixedHeight(34)
+        set_row = QtWidgets.QHBoxLayout(set_group)
+        set_row.setContentsMargins(8, 7, 8, 3)
+        set_row.setSpacing(8)
         self.map_checks = {}
         for kind, label in zip(MAPS, ("Normal", "Displace", "AO", "Specular")):
             check = CheckBox(label)
@@ -302,13 +313,17 @@ class Studio(QtWidgets.QDialog):
             check.toggled.connect(lambda checked, k=kind: self.set_selection_changed(k, checked))
             self.map_checks[kind] = check
             set_row.addWidget(check)
-        set_row.addStretch()
-        export_row.addLayout(set_row)
+        set_container = QtWidgets.QWidget()
+        set_container.setFixedHeight(38)
+        set_container_layout = QtWidgets.QVBoxLayout(set_container)
+        set_container_layout.setContentsMargins(0, 0, 0, 4)
+        set_container_layout.addWidget(set_group)
+        export_row.addWidget(set_container)
         layout.addSpacing(10)
         layout.addLayout(export_row)
         layout.addLayout(output_row)
         progress_row = QtWidgets.QHBoxLayout()
-        self.status = QtWidgets.QLabel("Ready to load")
+        self.status = StatusLabel("Ready to load")
         self.status.setWordWrap(True)
         self.status.setMinimumWidth(0)
         self.status.setSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred)
@@ -602,11 +617,11 @@ class Studio(QtWidgets.QDialog):
         kinds = [kind for kind in MAPS if self.map_checks[kind].isChecked()]
         labels = dict(zip(MAPS, ("Normal", "Displace", "AO", "Specular")))
         if not kinds:
-            self.status.setText("Select maps in Set to add to Slate.")
+            self.status.setText("Select maps in Set to add to Slate.", "error")
             self.status.setToolTip(self.status.text())
             return
         if not self.filename:
-            self.status.setText("Load a source image before adding its saved maps.")
+            self.status.setText("Load a source image before adding its saved maps.", "error")
             self.status.setToolTip(self.status.text())
             return
         extension = {"JPEG": ".jpg", "PNG": ".png", "TIFF": ".tif"}[self.format.currentData()]
@@ -614,15 +629,17 @@ class Studio(QtWidgets.QDialog):
                                            extension, self.auto_output.isChecked())
         missing_text = "Missing: " + ", ".join(labels[k] for k in missing) if missing else ""
         if not files:
-            self.status.setText(missing_text + ". Save these maps first.")
+            self.status.setText(missing_text + ". Save these maps first.", "error")
             self.status.setToolTip(self.status.text())
             return
         try:
             from .maxbridge import add_to_slate
-            add_to_slate(files, progress=lambda step: self.status.setText("Slate: " + step))
+            created = add_to_slate(files, progress=lambda step: self.status.setText("Slate: " + step))
+            if not created:
+                raise RuntimeError("No nodes were added")
         except Exception as exc:
             detail = "Slate error: " + str(exc)
-            self.status.setText(detail)
+            self.status.setText(detail, "error")
             self.status.setToolTip(detail + "\nInspect Slate before retrying; some nodes may have been created."
                                    + ("\n" + missing_text if missing else ""))
             self.raise_()
@@ -630,7 +647,7 @@ class Studio(QtWidgets.QDialog):
         message = "Added: " + ", ".join(labels[k] for k, filename in files)
         if missing_text:
             message += " | " + missing_text
-        self.status.setText(message)
+        self.status.setText(message, "warning" if missing_text else "success")
         self.status.setToolTip(message + "\n" + "\n".join(filename for kind, filename in files))
 
     def export_failed(self, error):

@@ -173,7 +173,7 @@ def run():
         print("PASS: each effect changes every shape; 16 distinct combinations per shape; 2D independent")
         # Uniform displacement must change the sphere silhouette, even with Normal disabled.
         engine.upload(fixture(128,128,lambda x,y:65535))
-        textures["dispMap"]=engine.process(dict(DEFAULTS),"displacement")
+        textures["dispMap"]=engine.process(dict(DEFAULTS, disp_contrast=1.0),"displacement")
         # Disabled samplers still need valid texture names after upload releases textures.
         textures.update(resultMap=textures["dispMap"],normalMap=textures["dispMap"],aoMap=textures["dispMap"],specMap=textures["dispMap"])
         frame=engine.texture("preview-test",RGBA32F)

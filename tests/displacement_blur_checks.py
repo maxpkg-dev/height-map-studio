@@ -66,17 +66,18 @@ def pixels(settings, kind="displacement", scale=(1.0, 1.0)):
 
 try:
     engine.upload(fixture(256, 256, lambda x, y: y * 256 + x))
-    precision = pixels(dict(DEFAULTS))
+    neutral = dict(DEFAULTS, disp_contrast=1.0)
+    precision = pixels(neutral)
     assert precision == array.array("H", range(65536)), (engine.gl.description, list(precision[:20]), max(abs(a-b) for a,b in zip(precision, range(65536))))
     engine.upload(fixture(65, 65, lambda x, y: 65535 if x == 32 and y == 32 else 0))
-    sharp = pixels(dict(DEFAULTS))
-    blurred = pixels(dict(DEFAULTS, disp_blur=3.2))
+    sharp = pixels(neutral)
+    blurred = pixels(dict(neutral, disp_blur=3.2))
     assert 0 < blurred[32 * 65 + 32] < sharp[32 * 65 + 32]
     assert blurred[32 * 65 + 31] > 0
-    assert pixels(dict(DEFAULTS, blur=8)) == sharp
+    assert pixels(dict(neutral, blur=8)) == sharp
     for kind in ("normal", "ao", "specular"):
-        assert pixels(dict(DEFAULTS), kind) == pixels(dict(DEFAULTS, disp_blur=8), kind)
-    assert pixels(dict(DEFAULTS, disp_blur=6.4), scale=(2.0, 2.0)) == blurred
+        assert pixels(neutral, kind) == pixels(dict(neutral, disp_blur=8), kind)
+    assert pixels(dict(neutral, disp_blur=6.4), scale=(2.0, 2.0)) == blurred
     print("PASS: GPU blur effect, independent maps, preview scaling and all 65536 levels at Blur=0")
 
     width, height = 131, 73

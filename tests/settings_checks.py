@@ -61,6 +61,11 @@ def run_settings_checks():
         assert restored.parameters["strength"].slider.maximum() == 1000
         assert restored.parameters["ao_strength"].slider.maximum() == 100000
         assert not restored.add_slate.isChecked()
+        assert restored.settings["disp_contrast"] == 0.15
+        assert restored.parameters["disp_contrast"].spin.value() == 0.15
+        set_groups = [group for group in restored.findChildren(QtWidgets.QGroupBox) if group.title() == "Set"]
+        assert len(set_groups) == 1 and set_groups[0].height() == restored.save_button.height() == 34
+        assert [check.text() for check in restored.map_checks.values()] == ["Normal", "Displace", "AO", "Specular"]
         assert window.settings_button.height() == window.open_button.height()
         assert window.settings_button.width() == window.open_button.width()
         report["passed"].append("Settings single-window close/reopen, persisted ranges, exact About/version/links and matching launch buttons")

@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 from pymxs import runtime as rt
 from heightmap_studio import ui
-from heightmap_studio.promotion import PromotionStrip, DONATION, PROMOTIONS
+from heightmap_studio.promotion import PromotionStrip, DONATION, PROMOTIONS, ORANGE
 from heightmap_studio.qt import QtCore
 
 root = Path(__file__).resolve().parents[1]
@@ -21,6 +21,8 @@ window.layout().activate()
 assert window.layout().indexOf(strip) == window.layout().indexOf(window.preview) + 1
 assert strip.height() == 26 and strip.donate.isVisible()
 assert strip.donate.text() == "\u2665 Donate"
+assert strip.donate.size().width() == 94 and strip.donate.size().height() == 26
+assert ORANGE in strip.donate.styleSheet() and ORANGE in strip.link.styleSheet()
 assert strip.timer.isActive() and strip.timer.interval() == 30000
 assert len(strip.findChildren(QtCore.QTimer)) == 1
 

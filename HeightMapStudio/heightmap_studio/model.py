@@ -2,7 +2,7 @@
 import math
 
 MAPS = ("normal", "displacement", "ao", "specular")
-DEFAULTS = dict(strength=3.0, blur=0.0, detail_size=0.0, disp_contrast=1.0, disp_level=0.0, disp_blur=0.0,
+DEFAULTS = dict(strength=3.0, blur=0.0, detail_size=0.0, disp_contrast=0.15, disp_level=0.0, disp_blur=0.0,
                 ao_strength=2.0, ao_radius=24.0, ao_threshold=0.0, spec_brightness=0.0,
                 spec_contrast=1.0, spec_compress=0.0, directx=False, invert=False, seamless=True)
 
